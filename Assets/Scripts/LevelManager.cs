@@ -14,7 +14,7 @@ public class LevelManager : MonoBehaviour {
         
     }
 
-    public void PlayAgain()
+    public void LoadLastLevel()
     {
         SceneManager.LoadScene(lastLevel);
     }
