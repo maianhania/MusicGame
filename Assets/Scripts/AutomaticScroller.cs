@@ -19,11 +19,11 @@ public class AutomaticScroller : MonoBehaviour {
 		if (left && sr.horizontalNormalizedPosition > 0f)
         {
             Debug.Log("Scrolling to left");
-            sr.ScrollToLeft(0.001f);
+            sr.ScrollToLeft(0.00009f);
         } else if (!left && sr.horizontalNormalizedPosition < 1f)
         {
             Debug.Log("Scrolling to right");
-            sr.ScrollToRight(0.001f);
+            sr.ScrollToRight(0.00009f);
         } else if (sr.horizontalNormalizedPosition > 0.9)
         {
             Debug.Log("Setting scrolling direction to left");

@@ -17,9 +17,9 @@ public class MusicController : MonoBehaviour {
         //Debug.Log("Progress of music " + progress);
 
         //Detect the end of the audio source
-        //if (progress > 0.99f)
-        //{
-        //    levelManager.LoadLevel("Win");
-        //}
+        if (progress > 0.99f)
+        {
+            levelManager.LoadLevel("Win");
+        }
     }
 }
