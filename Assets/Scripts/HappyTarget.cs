@@ -11,12 +11,16 @@ public class HappyTarget : MonoBehaviour {
     public Material starMaterial;
 
     public KeyCode key;
-    bool active = false;
+    bool active;
     GameObject note;
     SpriteRenderer sr;
     public int score;
     public Sprite sprite1;
     public Sprite sprite2;
+
+    public AudioClip[] trumpetClips;
+    public AudioClip[] musicBoxClips;
+    public AudioClip[] guitarClips;
 
     public AudioClip e5;
     public AudioClip d5;
@@ -48,6 +52,7 @@ public class HappyTarget : MonoBehaviour {
         audioSource = GetComponent<AudioSource>();
         bubbles = this.gameObject.transform.GetChild(0).GetComponent<ParticleSystem>();
         bubbles.Stop();
+        UpdateParticles();
     }
 
     // Update is called once per frame
@@ -58,6 +63,7 @@ public class HappyTarget : MonoBehaviour {
         //Debug.Log("Score text " + text.text);
 
         UpdateParticles();
+        UpdateSounds();
 
         if (playAutomatic && active)
         {
@@ -66,17 +72,24 @@ public class HappyTarget : MonoBehaviour {
             UpdateScore();
             active = false;
         }
+        if (createMode)
+        {
+            if (Input.GetKeyDown(key))
+            {
+                Instantiate(n, transform.position, Quaternion.identity);
+            }
+        }
         else
         {
             HandleTouch();
 
-            if (createMode)
-            {
-                if (Input.GetKeyDown(key))
-                {
-                    Instantiate(n, transform.position, Quaternion.identity);
-                }
-            }
+            //if (createMode)
+            //{
+            //    if (Input.GetKeyDown(key))
+            //    {
+            //        Instantiate(n, transform.position, Quaternion.identity);
+            //    }
+            //}
 
 
             if (Input.GetKeyDown(key))
@@ -144,6 +157,55 @@ public class HappyTarget : MonoBehaviour {
 
         }
     }
+    
+    private void UpdateSounds()
+    {
+        int particlesOption = PlayerPrefs.GetInt("Sounds");
+        switch (particlesOption)
+        {
+            case 0:
+                // Music box   
+                e5 = musicBoxClips[0];
+                d5 = musicBoxClips[1];
+                c5 = musicBoxClips[2];
+                a4 = musicBoxClips[3];
+                a4_long = musicBoxClips[4];
+                g4 = musicBoxClips[5];
+                e4 = musicBoxClips[6];
+                d4 = musicBoxClips[7];
+                c4 = musicBoxClips[8];
+                break;
+            case 1:
+                // Trumpet
+                e5 = trumpetClips[0];
+                d5 = trumpetClips[1];
+                c5 = trumpetClips[2];
+                a4 = trumpetClips[3];
+                a4_long = trumpetClips[4];
+                g4 = trumpetClips[5];
+                e4 = trumpetClips[6];
+                d4 = trumpetClips[7];
+                c4 = trumpetClips[8];
+                break;
+            case 2:
+                //Guitar 
+                e5 = guitarClips[0];
+                d5 = guitarClips[1];
+                c5 = guitarClips[2];
+                a4 = guitarClips[3];
+                a4_long = guitarClips[4];
+                g4 = guitarClips[5];
+                e4 = guitarClips[6];
+                d4 = guitarClips[7];
+                c4 = guitarClips[8];
+
+                break;
+            default:
+                break;
+
+        }
+    }
+
 
     void OnTriggerEnter2D(Collider2D col)
     {

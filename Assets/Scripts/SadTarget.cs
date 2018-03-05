@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -5,12 +6,24 @@ using UnityEngine.UI;
 
 public class SadTarget : MonoBehaviour {
 
+    // Particle materials
+    public Material bubbleMaterial;
+    public Material starMaterial;
+
+    ParticleSystem bubbles;
+
     public KeyCode key;
     bool active = false;
     GameObject note;
     SpriteRenderer sr;
     public Sprite sprite1;
     public Sprite sprite2;
+
+    //public Hashtable clips;
+
+    public AudioClip[] pianoClips;
+    public AudioClip[] musicBoxClips;
+    public AudioClip[] guitarClips;
 
     public AudioClip b4;
     public AudioClip c5;
@@ -22,7 +35,7 @@ public class SadTarget : MonoBehaviour {
     public AudioClip g5;
     AudioSource audioSource;
     public bool createMode;
-    public GameObject n;
+    private GameObject n;
     private AudioClip current_audio;
 
     public bool playAutomatic; // whether sound played automatically on collision or by tap
@@ -34,10 +47,25 @@ public class SadTarget : MonoBehaviour {
         // Get target sprite 
         sr = GetComponent<SpriteRenderer>();
         audioSource = GetComponent<AudioSource>();
+        bubbles = this.gameObject.transform.GetChild(0).GetComponent<ParticleSystem>();
+        bubbles.Stop();
+        UpdateParticles();
     }
 	
 	// Update is called once per frame
-	void Update () {
+	void Update ()
+    {
+        UpdateParticles();
+
+        UpdateSounds();
+
+        if (playAutomatic && active)
+        {
+            bubbles.Play();
+            Destroy(note);
+            UpdateScore();
+            active = false;
+        }
         if (createMode)
         {
             if (Input.GetKeyDown(key))
@@ -46,6 +74,38 @@ public class SadTarget : MonoBehaviour {
             }
         }
 
+
+        else
+        {
+            HandleTouch();
+
+            //if (createMode)
+            //{
+            //    if (Input.GetKeyDown(key))
+            //    {
+            //        Instantiate(n, transform.position, Quaternion.identity);
+            //    }
+            //}
+
+
+            if (Input.GetKeyDown(key))
+            {
+                StartCoroutine(Pressed());
+                if (active)
+                {
+                    //Debug.Log("I'm playing");
+                    //audioSource.PlayOneShot(current_audio, 1F);
+                    Destroy(note);
+                    UpdateScore();
+                    active = false;
+
+                }
+            }
+        }
+    }
+
+    private void HandleTouch()
+    {
         for (int i = 0; i < Input.touchCount; ++i)
         {
             if (Input.GetTouch(i).phase == TouchPhase.Began)
@@ -58,11 +118,11 @@ public class SadTarget : MonoBehaviour {
                     if (active)
                     {
                         //Debug.Log("I'm playing");
+                        bubbles.Play();
                         audioSource.PlayOneShot(current_audio, 1F);
                         Destroy(note);
                         UpdateScore();
                         active = false;
-
                     }
 
                     StartCoroutine(Pressed());
@@ -76,6 +136,70 @@ public class SadTarget : MonoBehaviour {
             }
         }
     }
+
+    private void UpdateParticles()
+    {
+        int particlesOption = PlayerPrefs.GetInt("Particles");
+        switch (particlesOption)
+        {
+            case 0:
+                bubbles.GetComponent<ParticleSystemRenderer>().material = starMaterial;
+                break;
+            case 1:
+                bubbles.GetComponent<ParticleSystemRenderer>().material = bubbleMaterial;
+                break;
+            default:
+                break;
+
+        }
+    }
+
+    private void UpdateSounds()
+    {
+        int particlesOption = PlayerPrefs.GetInt("Sounds");
+        switch (particlesOption)
+        {
+            case 0:
+                // Music 
+                b4 = musicBoxClips[0];
+                c5 = musicBoxClips[1];
+                e4_1 = musicBoxClips[2];
+                e4_3 = musicBoxClips[3];
+                e5_5 = musicBoxClips[4];
+                fis4 = musicBoxClips[5];
+                fis5_4 = musicBoxClips[6];
+                g5 = musicBoxClips[7];
+                break;
+            case 1:
+                // Trumpet
+                b4 = pianoClips[0];
+                c5 = pianoClips[1];
+                e4_1 = pianoClips[2];
+                e4_3 = pianoClips[3];
+                e5_5 = pianoClips[4];
+                fis4 = pianoClips[5];
+                fis5_4 = pianoClips[6];
+                g5 = pianoClips[7];
+                break;
+            case 2:
+                // guitar
+                b4 = guitarClips[0];
+                c5 = guitarClips[1];
+                e4_1 = guitarClips[2];
+                e4_3 = guitarClips[3];
+                e5_5 = guitarClips[4];
+                fis4 = guitarClips[5];
+                fis5_4 = guitarClips[6];
+                g5 = guitarClips[7];
+                break;
+
+                
+            default:
+                break;
+
+        }
+    }
+
 
     void OnTriggerEnter2D(Collider2D col)
     {

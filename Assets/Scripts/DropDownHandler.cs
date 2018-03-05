@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -9,10 +10,18 @@ public class DropDownHandler : MonoBehaviour {
 
     void Start()
     {
+        LoadSettings();
         myDropdown.onValueChanged.AddListener(delegate {
             myDropdownValueChangedHandler(myDropdown);
         });
     }
+
+    private void LoadSettings()
+    {
+        int savedValue = PlayerPrefs.GetInt(settingName);
+        SetDropdownIndex(savedValue);
+    }
+
     void Destroy()
     {
         myDropdown.onValueChanged.RemoveAllListeners();

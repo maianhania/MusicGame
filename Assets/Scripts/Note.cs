@@ -11,6 +11,8 @@ public class Note : MonoBehaviour {
     SpriteRenderer sr;
     public Sprite balloon;
     public Sprite emoji;
+    public Color color;
+
     //float speed = 2.0F;
     // Use this for initialization
     void Awake()
@@ -20,13 +22,15 @@ public class Note : MonoBehaviour {
     }
 
 	void Start () {
-        rb.velocity = new Vector2(speed, 0);
-	}
+        //rb.velocity = new Vector2(speed, 0);
+        UpdateNotes();
+    }
 
     // Update is called once per frame
     void Update()
     {
-        //transform.Translate(new Vector3(speed, 0, 0) * Time.deltaTime);
+        //Debug.Log("Note update");
+        transform.Translate(new Vector2(speed, 0) * Time.deltaTime);
         UpdateNotes();
     }
 

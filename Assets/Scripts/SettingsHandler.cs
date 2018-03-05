@@ -11,10 +11,12 @@ public class SettingsHandler : MonoBehaviour
     public GameObject pauseMenuUI;
     public GameObject music;
     private AudioSource actualMusic;
+    public GameObject scrollView;
+    public bool isMatchingGame;
+    public bool lastMusicState; // whether music was on before
 
     private void Start()
     {
-        gameIsPaused = false;
         actualMusic = music.GetComponent<AudioSource>();
     }
 
@@ -40,17 +42,33 @@ public class SettingsHandler : MonoBehaviour
 
     public void Pause()
     {
+        lastMusicState = actualMusic.isPlaying;
+        Debug.Log("Entering settings panel with game being paused? " + !lastMusicState);
         //pauseMenuUI.SetActive(true);
         Time.timeScale = 0f;
         actualMusic.Pause();
-        gameIsPaused = true;
+        //gameIsPaused = actualMusic.isPlaying; // true
+        if (isMatchingGame && scrollView.activeSelf)
+        {
+            scrollView.SetActive(false);
+        }
     }
 
     public void Resume()
     {
-        //pauseMenuUI.SetActive(false);
         Time.timeScale = 1f;
         actualMusic.UnPause();
-        gameIsPaused = false;
+        //pauseMenuUI.SetActive(false);
+        //if (lastMusicState)
+        //{
+        //    Time.timeScale = 1f;
+        //    actualMusic.UnPause();
+        //    //gameIsPaused = actualMusic.isPlaying; // false
+        //}
+
+        if (isMatchingGame && !scrollView.activeSelf)
+        {
+            scrollView.SetActive(true);
+        }
     }
 }

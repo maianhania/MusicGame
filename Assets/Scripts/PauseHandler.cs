@@ -11,7 +11,6 @@ public class PauseHandler : MonoBehaviour {
     public GameObject music;
     private AudioSource actualMusic;
 
-    public Button playButton;
     public Button pauseButton;
     public Image buttonImage;
     public Sprite playSprite;
@@ -66,7 +65,7 @@ public class PauseHandler : MonoBehaviour {
         gameIsPaused = false;
         if (buttonImage != null)
         {
-            Debug.Log("Pause, buttonImage changing sprite");
+            Debug.Log("Resume, buttonImage changing sprite");
             buttonImage.sprite = pauseSprite;
         }
             
