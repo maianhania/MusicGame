@@ -50,8 +50,11 @@ public class HappyTarget : MonoBehaviour {
         // Get target sprite 
         sr = GetComponent<SpriteRenderer>();
         audioSource = GetComponent<AudioSource>();
-        bubbles = this.gameObject.transform.GetChild(0).GetComponent<ParticleSystem>();
-        bubbles.Stop();
+        if (this.gameObject.transform.GetChild(0))
+        {
+            bubbles = this.gameObject.transform.GetChild(0).GetComponent<ParticleSystem>();
+            bubbles.Stop();
+        }
         UpdateParticles();
     }
 
@@ -160,7 +163,7 @@ public class HappyTarget : MonoBehaviour {
     
     private void UpdateSounds()
     {
-        int particlesOption = PlayerPrefs.GetInt("Sounds");
+        int particlesOption = PlayerPrefs.GetInt("Sounds-happy");
         switch (particlesOption)
         {
             case 0:

@@ -22,7 +22,7 @@ public class Note : MonoBehaviour {
     }
 
 	void Start () {
-        //rb.velocity = new Vector2(speed, 0);
+        rb.velocity = new Vector2(speed, 0);
         UpdateNotes();
     }
 
@@ -30,7 +30,7 @@ public class Note : MonoBehaviour {
     void Update()
     {
         //Debug.Log("Note update");
-        transform.Translate(new Vector2(speed, 0) * Time.deltaTime);
+        //transform.Translate(new Vector2(speed, 0) * Time.deltaTime);
         UpdateNotes();
     }
 

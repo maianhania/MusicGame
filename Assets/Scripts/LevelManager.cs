@@ -1,4 +1,5 @@
-﻿using System.Collections;
+using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -12,6 +13,19 @@ public class LevelManager : MonoBehaviour {
         lastLevel = SceneManager.GetActiveScene().name;
         SceneManager.LoadScene(name);
         
+    }
+
+    public void LoadLevelWithDelay(string name)
+    {
+        StartCoroutine(LoadDelay(name));
+
+    }
+
+    private IEnumerator LoadDelay(string name)
+    {
+        lastLevel = SceneManager.GetActiveScene().name;
+        yield return new WaitForSeconds(1);
+        SceneManager.LoadScene(name);
     }
 
     public void LoadLastLevel()

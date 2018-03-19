@@ -29,7 +29,7 @@ public class DropDownHandler : MonoBehaviour {
 
     private void myDropdownValueChangedHandler(Dropdown target)
     {
-        //Debug.Log("selected: " + target.value);
+        Debug.Log(settingName + " value changed to: " + target.value);
         string name = gameObject.transform.parent.name;
         //Debug.Log("Parent name: " + target.value);
         PlayerPrefs.SetInt(settingName, target.value);

@@ -56,7 +56,6 @@ public class SadTarget : MonoBehaviour {
 	void Update ()
     {
         UpdateParticles();
-
         UpdateSounds();
 
         if (playAutomatic && active)
@@ -156,11 +155,11 @@ public class SadTarget : MonoBehaviour {
 
     private void UpdateSounds()
     {
-        int particlesOption = PlayerPrefs.GetInt("Sounds");
+        int particlesOption = PlayerPrefs.GetInt("Sounds-sad");
         switch (particlesOption)
         {
             case 0:
-                // Music 
+                // Music box
                 b4 = musicBoxClips[0];
                 c5 = musicBoxClips[1];
                 e4_1 = musicBoxClips[2];
@@ -171,7 +170,7 @@ public class SadTarget : MonoBehaviour {
                 g5 = musicBoxClips[7];
                 break;
             case 1:
-                // Trumpet
+                // Piano
                 b4 = pianoClips[0];
                 c5 = pianoClips[1];
                 e4_1 = pianoClips[2];
@@ -301,4 +300,5 @@ public class SadTarget : MonoBehaviour {
     {
         PlayerPrefs.SetInt("Score", PlayerPrefs.GetInt("Score") + 1);
     }
+
 }

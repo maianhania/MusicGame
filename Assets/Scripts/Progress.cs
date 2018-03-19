@@ -20,6 +20,13 @@ public class Progress : MonoBehaviour {
         float progress = (float)PlayerPrefs.GetInt("Score") / (float)total;
         slider.value = progress;
         progressText.text = (progress * 100).ToString("0") + "%";
+        UpdateProgress(progress);
+    }
 
+
+
+    void UpdateProgress(float progress)
+    {
+        PlayerPrefs.SetFloat("Progress", progress);
     }
 }

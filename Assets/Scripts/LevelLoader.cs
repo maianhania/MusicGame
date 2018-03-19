@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -21,7 +22,35 @@ public class LevelLoader : MonoBehaviour {
         StartCoroutine(LoadAsynchronously(name));
 
     }
+    public void LoadLevelWithDelay(string name)
+    {
+        StartCoroutine(LoadAsynchronouslyDelay(name));
 
+    }
+
+    private IEnumerator LoadAsynchronouslyDelay(string name)
+    {
+        yield return new WaitForSeconds(1);
+        AsyncOperation op = SceneManager.LoadSceneAsync(name);
+
+        loadingScreen.SetActive(true);
+
+        while (!op.isDone)
+        {
+            float progress = Mathf.Clamp01(op.progress / .9f);
+            slider.value = progress;
+            progressText.text = (progress * 100).ToString("0") + "%";
+            Debug.Log(progress);
+
+            yield return null;
+        }
+    }
+
+    private IEnumerator LoadDelay(string name)
+    {
+        yield return new WaitForSeconds(1);
+        SceneManager.LoadScene(name);
+    }
     IEnumerator LoadAsynchronously (string name)
     {
         AsyncOperation op = SceneManager.LoadSceneAsync(name);

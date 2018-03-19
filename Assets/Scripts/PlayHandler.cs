@@ -15,6 +15,7 @@ public class PlayHandler : MonoBehaviour
     public GameObject pauseMenuUI;
     public GameObject music;
     private AudioSource actualMusic;
+    public GameObject noteParent;
     private GameObject[] notes;
     public GameObject[] noteTargets;
 
@@ -33,13 +34,15 @@ public class PlayHandler : MonoBehaviour
         actualMusic = music.GetComponent<AudioSource>();
         Pause();
         script = scrollView.GetComponent<AutomaticScroller>();
-        Collider2D[] colliders = GetComponents<Collider2D>();
+        Transform[] transforms = noteParent.GetComponentsInChildren<Transform>();
+
         List<GameObject> temp = new List<GameObject>();
-        foreach (Collider2D col in colliders)
+        //Collider2D[] colliders = GetComponents<Collider2D>();
+        foreach (Transform transfrom in transforms)
         {
-            if (col.gameObject.tag.Contains("Note")) {
-                temp.Add(col.gameObject);
-            }
+            
+            temp.Add(transform.gameObject);
+            
         }
         notes = temp.ToArray();
         Debug.Log("Got this many notes: " + notes.Length.ToString());
@@ -74,8 +77,9 @@ public class PlayHandler : MonoBehaviour
         //pauseMenuUI.SetActive(true);
         if (isMatchingGame)
         {
-            //scrollView.SetActive(true);
+            scrollView.SetActive(true);
             playView.SetActive(false);
+            Time.timeScale = 0f;
             foreach (GameObject noteTarget in noteTargets)
             {
                 Collider2D col = noteTarget.GetComponent<CircleCollider2D>();
@@ -120,11 +124,20 @@ public class PlayHandler : MonoBehaviour
             Collider2D col = noteTarget.GetComponent<CircleCollider2D>();
             col.enabled = true;
         }
+        foreach (GameObject noteTarget in noteTargets)
+        {
+            Collider2D col = noteTarget.GetComponent<CircleCollider2D>();
+            col.enabled = true;
+        }
+        //foreach (GameObject note in notes)
+        //{
+        //    note.SetActive(false);
+        //}
         Debug.Log("Resume");
         Time.timeScale = 1f;
         if (isMatchingGame)
         {
-            //scrollView.SetActive(false);
+            scrollView.SetActive(false);
             script = scrollView.GetComponent<AutomaticScroller>();
             playView.SetActive(true);
         } else

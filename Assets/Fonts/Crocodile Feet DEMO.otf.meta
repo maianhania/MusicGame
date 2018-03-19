@@ -1,0 +1,21 @@
+fileFormatVersion: 2
+guid: 3fb4ae1382fb5ab46b8d941d4edcab1d
+timeCreated: 1520279766
+licenseType: Free
+TrueTypeFontImporter:
+  serializedVersion: 4
+  fontSize: 16
+  forceTextureCase: -2
+  characterSpacing: 0
+  characterPadding: 1
+  includeFontData: 1
+  fontName: Crocodile Feet DEMO
+  fontNames:
+  - Crocodile Feet DEMO
+  fallbackFontReferences: []
+  customCharacters: 
+  fontRenderingMode: 0
+  ascentCalculationMode: 1
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
