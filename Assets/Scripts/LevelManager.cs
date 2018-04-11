@@ -24,7 +24,7 @@ public class LevelManager : MonoBehaviour {
     private IEnumerator LoadDelay(string name)
     {
         lastLevel = SceneManager.GetActiveScene().name;
-        yield return new WaitForSeconds(1);
+        yield return new WaitForSeconds(1.5f);
         SceneManager.LoadScene(name);
     }
 

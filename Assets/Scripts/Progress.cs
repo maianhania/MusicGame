@@ -4,9 +4,10 @@ using UnityEngine;
 using UnityEngine.UI;
 
 public class Progress : MonoBehaviour {
-    public int total;
+    //public int total;
     public Slider slider;
-    public Text progressText;
+    //public Text progressText;
+    public AudioSource audioSource;
 
     // Use this for initialization
     void Start () {
@@ -17,9 +18,10 @@ public class Progress : MonoBehaviour {
     {
         //float percentage = (float) (PlayerPrefs.GetInt("Score") / total);
         //GetComponent<Text>().text = percentage.ToString("0.00");
-        float progress = (float)PlayerPrefs.GetInt("Score") / (float)total;
+        float progress = Mathf.Clamp01(audioSource.time / audioSource.clip.length);
+        //float progress = (float)PlayerPrefs.GetInt("Score") / (float)total;
         slider.value = progress;
-        progressText.text = (progress * 100).ToString("0") + "%";
+        //progressText.text = (progress * 100).ToString("0") + "%";
         UpdateProgress(progress);
     }
 

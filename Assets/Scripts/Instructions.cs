@@ -16,10 +16,15 @@ public class Instructions : MonoBehaviour {
     int currentIndex;
     private bool start;
 
+    public GameObject pianoButton;
+    public GameObject settingsButton;
+
     public AudioSource audioSource;
     public AudioClip welcome;
     public AudioClip settings;
     public AudioClip piano;
+
+    public MuteHandler muteHandler;
 
     //private bool lastSettings;
     //private bool lastPiano;
@@ -48,23 +53,27 @@ public class Instructions : MonoBehaviour {
         }
         if (currentIndex == 2 || currentIndex == 3)
         {
+            pianoButton.SetActive(true);
             pianoIconText.SetActive(true);
             if (currentIndex == 3)
                 audioSource.PlayOneShot(piano);
         } 
         else
         {
+            pianoButton.SetActive(false);
             //Debug.Log("Current Index not about piano");
             pianoIconText.SetActive(false);
         }
         if (currentIndex == 5 || currentIndex == 6)
         {
+            settingsButton.SetActive(true);
             settingsIconText.SetActive(true);
             if (currentIndex == 6)
                 audioSource.PlayOneShot(settings);
         }
         else
         {
+            settingsButton.SetActive(false);
             //Debug.Log("Current Index not about piano");
             settingsIconText.SetActive(false);
         }
@@ -86,23 +95,29 @@ public class Instructions : MonoBehaviour {
 
         if (currentIndex == 2 || currentIndex == 3)
         {
+            pianoButton.SetActive(true);
             pianoIconText.SetActive(true);
             if (currentIndex == 2)
                 audioSource.PlayOneShot(piano);
+            if (currentIndex == 3)
+                muteHandler.Mute();
         } else
         {
+            pianoButton.SetActive(false);
             //Debug.Log("Current Index not about piano");
             pianoIconText.SetActive(false);
             //audioSource.Stop();
         }
         if (currentIndex == 5 || currentIndex == 6)
         {
+            settingsButton.SetActive(true);
             settingsIconText.SetActive(true);
             if (currentIndex == 5)
                 audioSource.PlayOneShot(settings);
         }
         else
         {
+            settingsButton.SetActive(false);
             //Debug.Log("Current Index not about piano");
             settingsIconText.SetActive(false);
             //audioSource.Stop();

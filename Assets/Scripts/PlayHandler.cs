@@ -16,8 +16,11 @@ public class PlayHandler : MonoBehaviour
     public GameObject music;
     private AudioSource actualMusic;
     public GameObject noteParent;
-    private GameObject[] notes;
+    private GameObject[] notesGameObjects;
+    private Note[] notes;
     public GameObject[] noteTargets;
+
+    public float speed;
 
     public Button playButton;
     public Image buttonImage;
@@ -29,7 +32,7 @@ public class PlayHandler : MonoBehaviour
     private void Start()
     {
         gameIsPaused = true;
-        //Time.timeScale = 0f;
+        Time.timeScale = 0f;
         firstPlay = true;
         actualMusic = music.GetComponent<AudioSource>();
         Pause();
@@ -44,8 +47,22 @@ public class PlayHandler : MonoBehaviour
             temp.Add(transform.gameObject);
             
         }
-        notes = temp.ToArray();
+        notesGameObjects = temp.ToArray();
+
+        Debug.Log("Got this many notes game objects: " + notesGameObjects.Length.ToString());
+        List<Note> temp2 = new List<Note>();
+        foreach (GameObject n in notesGameObjects)
+        {
+            if (n.GetComponent<Note>())
+            {
+                Debug.Log("Found note");
+            }
+            //temp2.Add(n.GetComponent<Note>());
+        }
+        notes = temp2.ToArray();
+        //speed = notes[1].speed;
         Debug.Log("Got this many notes: " + notes.Length.ToString());
+        Debug.Log("Notes have speed " + speed.ToString());
     }
 
     // Update is called once per frame
@@ -92,8 +109,8 @@ public class PlayHandler : MonoBehaviour
         if (firstPlay)
         {
             Debug.Log("First play");
-            //Time.timeScale = 0f;
-            //actualMusic.Pause();
+            Time.timeScale = 0f;
+            actualMusic.Pause();
             gameIsPaused = true;
             //pauseButton.GetComponentInParent<GameObject>().SetActive = false;
             if (buttonImage != null)
@@ -103,7 +120,7 @@ public class PlayHandler : MonoBehaviour
             }
         } else
         {
-            //Time.timeScale = 0f;
+            Time.timeScale = 0f;
             actualMusic.Pause();
             gameIsPaused = true;
             //pauseButton.GetComponentInParent<GameObject>().SetActive = false;
@@ -119,22 +136,14 @@ public class PlayHandler : MonoBehaviour
 
     public void Resume()
     {
-        foreach (GameObject noteTarget in noteTargets)
-        {
-            Collider2D col = noteTarget.GetComponent<CircleCollider2D>();
-            col.enabled = true;
-        }
-        foreach (GameObject noteTarget in noteTargets)
-        {
-            Collider2D col = noteTarget.GetComponent<CircleCollider2D>();
-            col.enabled = true;
-        }
-        //foreach (GameObject note in notes)
-        //{
-        //    note.SetActive(false);
-        //}
         Debug.Log("Resume");
         Time.timeScale = 1f;
+        foreach (GameObject noteTarget in noteTargets)
+        {
+            Collider2D col = noteTarget.GetComponent<CircleCollider2D>();
+            col.enabled = true;
+        }
+
         if (isMatchingGame)
         {
             scrollView.SetActive(false);
@@ -143,6 +152,7 @@ public class PlayHandler : MonoBehaviour
         } else
         {
             pauseMenuUI.SetActive(false);
+            playView.SetActive(true);
         }
         if (firstPlay)
         {
@@ -162,8 +172,6 @@ public class PlayHandler : MonoBehaviour
                 Debug.Log("Resume, buttonImage null");
         } else
         {
-            //pauseMenuUI.SetActive(false);
-            //Time.timeScale = 1f;
             actualMusic.UnPause();
             gameIsPaused = false;
             if (buttonImage != null)

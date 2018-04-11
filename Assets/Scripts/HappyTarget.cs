@@ -6,6 +6,7 @@ using UnityEngine.UI;
 
 public class HappyTarget : MonoBehaviour {
 
+    public string targetNoteSound;
     // Particle materials
     public Material bubbleMaterial;
     public Material starMaterial;
@@ -32,13 +33,19 @@ public class HappyTarget : MonoBehaviour {
     public AudioClip d4;
     public AudioClip c4;
     AudioSource audioSource;
-    public bool createMode;
+    public static bool createMode;
     public GameObject n;
     private AudioClip current_audio;
+    public AudioSource backgroundMusic;
+    public RecordHandler recordHandler;
+    public GameObject createdNotesParent;
+    public static Hashtable colours;
 
     ParticleSystem bubbles;
 
     public bool playAutomatic; // whether sound played automatically on collision or by tap
+
+    public bool isTapperGame; 
 
     // Use this for initialization
     void Start () {
@@ -56,14 +63,29 @@ public class HappyTarget : MonoBehaviour {
             bubbles.Stop();
         }
         UpdateParticles();
+
+        if (isTapperGame)
+        {
+            SetColours();
+        }
+    }
+
+    private void SetColours()
+    {
+        colours = new Hashtable();
+        colours["E5"] = (Color)new Color32(247, 124, 255, 255);
+        colours["D5"] = (Color)new Color32(210, 165, 255, 255);
+        colours["C5"] = (Color)new Color32(49, 128, 255, 255);
+        colours["A4"] = (Color)new Color32(158, 251, 255, 255); 
+        colours["G4"] = (Color)new Color32(121, 255, 112, 255);
+        colours["E4"] = (Color)new Color32(247, 255, 122, 255);
+        colours["D4"] = (Color)new Color32(255, 124, 66, 255);
+        colours["C4"] = (Color)new Color32(255, 0, 0, 255);
     }
 
     // Update is called once per frame
     void Update()
     {
-
-        //Debug.Log("Score: " + score);
-        //Debug.Log("Score text " + text.text);
 
         UpdateParticles();
         UpdateSounds();
@@ -77,23 +99,67 @@ public class HappyTarget : MonoBehaviour {
         }
         if (createMode)
         {
-            if (Input.GetKeyDown(key))
+            if (Input.GetMouseButtonDown(0))
+                //if (Input.GetMouseButtonDown(0) || Input.GetTouch(0).phase == TouchPhase.Began || Input.GetKeyDown(key))
             {
-                Instantiate(n, transform.position, Quaternion.identity);
+                // Create the note                
+                Vector2 pos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+                //Vector2 pos = Camera.main.ScreenToWorldPoint(Input.GetTouch(0).position);
+                //Debug.Log("Position  " + pos);
+                // Get position in pixels
+                if (pos.x > transform.position.x - 0.5 && pos.x < transform.position.x + 0.5 && pos.y < transform.position.y + 0.5 && pos.y > transform.position.y - 0.5)
+                {
+                    GameObject clone = Instantiate(n, transform.position, Quaternion.identity);
+                    clone.GetComponent<SpriteRenderer>().color = (Color)colours[targetNoteSound];
+                    clone.transform.parent = createdNotesParent.transform;
+                    Debug.Log("Time of note: " +backgroundMusic.time.ToString("#.00"));
+                    recordHandler.UpdateTimes(clone, backgroundMusic.time);
+
+                    // Set note tag for appropriate sound
+                    switch (targetNoteSound)
+                    {
+                        case "E5":
+                            audioSource.PlayOneShot(e5, 1F);
+                            clone.tag = "Note-E5";
+                            break;
+                        case "D5":
+                            audioSource.PlayOneShot(d5, 1F);
+                            clone.tag = "Note-D5";
+                            break;
+                        case "C5":
+                            audioSource.PlayOneShot(c5, 1F);
+                            clone.tag = "Note-C5";
+                            break;
+                        case "A4":
+                            audioSource.PlayOneShot(a4, 1F);
+                            clone.tag = "Note-A4";
+                            break;
+                        case "G4":
+                            audioSource.PlayOneShot(g4, 1F);
+                            clone.tag = "Note-G4-long";
+                            break;
+                        case "E4":
+                            audioSource.PlayOneShot(e4, 1F);
+                            clone.tag = "Note-E4-long";
+                            break;
+                        case "D4":
+                            audioSource.PlayOneShot(d4, 1F);
+                            clone.tag = "Note-D4-long";
+                            break;
+                        case "C4":
+                            audioSource.PlayOneShot(c4, 1F);
+                            clone.tag = "Note-C4-long";
+                            break;
+                        default:
+                            break;
+
+                    }
+                }       
             }
         }
         else
         {
             HandleTouch();
-
-            //if (createMode)
-            //{
-            //    if (Input.GetKeyDown(key))
-            //    {
-            //        Instantiate(n, transform.position, Quaternion.identity);
-            //    }
-            //}
-
 
             if (Input.GetKeyDown(key))
             {

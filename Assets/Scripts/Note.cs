@@ -13,15 +13,17 @@ public class Note : MonoBehaviour {
     public Sprite emoji;
     public Color color;
 
+    private Vector2 originalPosition;
     //float speed = 2.0F;
     // Use this for initialization
     void Awake()
     {
         rb = GetComponent<Rigidbody2D>();
         sr = GetComponent<SpriteRenderer>();
+        originalPosition = gameObject.transform.position;
     }
 
-	void Start () {
+	void OnEnable () {
         rb.velocity = new Vector2(speed, 0);
         UpdateNotes();
     }
@@ -34,7 +36,10 @@ public class Note : MonoBehaviour {
         UpdateNotes();
     }
 
-
+    public void ResetPosition()
+    {
+        gameObject.transform.position = originalPosition;
+    }
 
     private void UpdateNotes()
     {

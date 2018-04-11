@@ -13,10 +13,15 @@ public class MuteHandler : MonoBehaviour
     public Sprite muteSprite;
     private bool musicIsMuted;
 
+    public bool isInstructions;
+
     // Use this for initialization
     void Start ()
     {
-        actualMusic = music.GetComponent<AudioSource>();
+        if (!isInstructions)
+        {
+            actualMusic = music.GetComponent<AudioSource>();
+        }
 
     }
 	
@@ -39,7 +44,10 @@ public class MuteHandler : MonoBehaviour
 
     public void Mute()
     {
-        actualMusic.mute = true;
+        if (!isInstructions)
+        {
+            actualMusic.mute = true;
+        }
         musicIsMuted = true;
         //pauseButton.GetComponentInParent<GameObject>().SetActive = false;
         if (buttonImage != null)
@@ -53,7 +61,10 @@ public class MuteHandler : MonoBehaviour
 
     public void UnMute()
     {
-        actualMusic.mute = false;
+        if (!isInstructions)
+        {
+            actualMusic.mute = false;
+        }
         musicIsMuted = false;
         if (buttonImage != null)
         {
